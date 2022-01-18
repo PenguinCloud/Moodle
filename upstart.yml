@@ -1,0 +1,150 @@
+---
+- name: Install moodle server
+  hosts: localhost
+  connection: local
+  vars_files:
+    - vars/prod.yml
+  tasks:
+
+    # Added the SSL keygen here to test without downloading everything first. Saves so much time
+    - name: Generate Private SSL Key
+      include_tasks:
+        file: jobs/run/openssl-keygen.yml
+        apply:
+          tags:
+          - build
+          - sslcertificate
+          - run
+      tags:
+      - build
+      - sslcertificate
+      - run
+
+    - name: Install Moodle Dependencies
+      include_tasks:
+        file: jobs/build/install_dependcies.yml
+        apply:
+          tags:
+          - nginx
+          - php
+          - build
+      tags:
+      - nginx
+      - php
+      - build
+
+    - name: Install Moodle
+      include_tasks:
+        file: jobs/build/install_moodle.yml
+        apply:
+          tags:
+          - moodle
+          - build
+      tags:
+        - moodle
+        - build
+
+#    - name: Configure LetsEncrypt
+#      include_tasks:
+#        file: jobs/run/config_letsencrypt.yml
+#        apply:
+#          tags:
+#          - sslcertificate
+#          - run
+#      tags:
+#      - sslcertificate
+#      - run
+
+#    - name: Generate amce certificate
+#      include_tasks:
+#        file: jobs/run/letsencrypt_issue.yml
+#        apply:
+#          tags:
+#          - build
+#          - sslcertificate
+#          - run
+#      tags:
+#      - build
+#      - sslcertificate
+#      - run
+
+    - name: Configure NGINX
+      include_tasks:
+        file: jobs/run/config_nginx.yml
+        apply:
+          tags:
+          - nginx
+          - run
+      tags:
+      - nginx
+      - run
+
+    - name: Run nginx
+      include_tasks:
+        file: jobs/run/nginx.yml
+        apply:
+          tags:
+            - nginx
+            - run
+      tags:
+        - nginx
+        - run
+
+    - name: Configure moodle for start up
+      include_tasks:
+        file: jobs/run/install_moodle.yml
+        apply:
+          tags:
+          - config-moodle
+          - run
+      tags:
+      - config_moodle
+      - run
+
+    - name: Test database connectivity
+      include_tasks:
+        file: jobs/test/database_test.yml
+        apply:
+          tags:
+          - database
+          - test
+          - run
+      tags:
+      - database
+      - test
+      - run
+
+    - name: Test Nginx
+      include_tasks:
+        file: jobs/test/nginx_test.yml
+        apply:
+          tags:
+          - nginx
+          - test
+          - run
+      tags:
+      - nginx
+      - test
+      - run
+
+    - name: Test URL
+      include_tasks:
+        file: jobs/test/moodle_test.yml
+        apply:
+          tags:
+            - url
+            - test
+            - run
+      tags:
+        - url
+        - test
+        - run
+
+    - name: Execute NGINX
+      include_tasks:
+        file: jobs/exec/nginx.yml
+        apply:
+          tags:
+          - exec
+      tags:
+      - exec

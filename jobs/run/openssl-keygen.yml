@@ -1,0 +1,16 @@
+---
+- name: Generate an OpenSSL private key
+  openssl_privatekey:
+    path: "/etc/ssl/private/{{ organization.name }}.pem"
+    size: "{{ openssl.key_size }}"
+    type: "{{ openssl.key_type }}"
+    backup: yes
+
+- name: Generate an OpenSSL Certificate Signing Request with Subject information
+  openssl_csr:
+    path: "/etc/ssl/certs/{{ organization.name }}.csr"
+    privatekey_path: "/etc/ssl/private/{{ organization.name }}_privkey.pem"
+    country_name: "{{ organization.country }}"
+    organization_name: "{{ organization.name }}"
+    email_address: "{{ organization.email }}"
+    common_name: "{{ organization.hostname }}"

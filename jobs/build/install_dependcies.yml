@@ -1,0 +1,22 @@
+---
+- name: Install Dependencies
+  apt:
+    pkg:
+    - nginx-core
+    - php
+    - php-fpm
+    - php-common
+    - php-gmp
+    - php-curl
+    - php-intl
+    - php-mbstring
+    - php-xmlrpc
+    - php-gd
+    - php-xml
+    - php-cli
+    - php-zip
+    - php-mysql
+    - git
+    - python3-pymysql
+    state: latest
+    update_cache: yes

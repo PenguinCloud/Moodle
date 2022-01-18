@@ -1,0 +1,8 @@
+.yaml
+*secret*
+.id*
+.key
+.crt
+venv/
+.idea/
+.json
