@@ -6,20 +6,6 @@
     - vars/prod.yml
   tasks:
 
-    # Added the SSL keygen here to test without downloading everything first. Saves so much time
-    - name: Generate Private SSL Key
-      include_tasks:
-        file: jobs/run/openssl-keygen.yml
-        apply:
-          tags:
-          - build
-          - sslcertificate
-          - run
-      tags:
-      - build
-      - sslcertificate
-      - run
-
     - name: Install Moodle Dependencies
       include_tasks:
         file: jobs/build/install_dependcies.yml
@@ -44,29 +30,18 @@
         - moodle
         - build
 
-#    - name: Configure LetsEncrypt
-#      include_tasks:
-#        file: jobs/run/config_letsencrypt.yml
-#        apply:
-#          tags:
-#          - sslcertificate
-#          - run
-#      tags:
-#      - sslcertificate
-#      - run
-
-#    - name: Generate amce certificate
-#      include_tasks:
-#        file: jobs/run/letsencrypt_issue.yml
-#        apply:
-#          tags:
-#          - build
-#          - sslcertificate
-#          - run
-#      tags:
-#      - build
-#      - sslcertificate
-#      - run
+    - name: Generate Private SSL Key
+      include_tasks:
+        file: jobs/run/ssl_generate.yml
+        apply:
+          tags:
+          - build
+          - sslcertificate
+          - run
+      tags:
+      - build
+      - sslcertificate
+      - run
 
     - name: Configure NGINX
       include_tasks:

@@ -2,6 +2,6 @@
 - name: Install moodle via git
   ansible.builtin.git:
     repo: 'https://github.com/moodle/moodle.git'
-    version: origin/MOODLE_39_STABLE
+    version: MOODLE_39_STABLE
     dest: /opt/moodle
 

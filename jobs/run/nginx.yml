@@ -2,4 +2,3 @@
 - name: Start nginx
   shell:
     cmd: nginx
-

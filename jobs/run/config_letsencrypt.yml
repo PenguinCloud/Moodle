@@ -1,5 +1,0 @@
----
-- name: Template letsencrypt_host_config file to /etc/ansible/host_vars
-  template:
-    src: templates/letsencrypt_host_config.j2
-    dest: /etc/ansible/host_vars/letsencrypt_host_config
