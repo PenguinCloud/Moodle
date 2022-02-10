@@ -12,17 +12,11 @@ organization:
   email: "{{ lookup('env', 'ORGANIZATION_EMAIL') }}"
   hostname: "{{ lookup('env', 'ORGANISATION_HOSTNAME') }}"
 
-admin:
-  name: "{{ lookup('env', 'ADMIN_NAME') }}"
-  password: "{{ lookup('env', 'ADMIN_PASSWORD') }}"
-
 openssl:
   key_size: "4096"
   key_type: "RSA"
 
 url: "{{ lookup('env', 'URL') }}"
-
-website_name: "{{ lookup('env', 'WEBSITE_NAME') }}"
 
 trusted_domain:  "{{ lookup('env', 'TRUSTED_DOMAIN') }}"
 

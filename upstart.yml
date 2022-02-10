@@ -63,9 +63,9 @@
         - nginx
         - run
 
-    - name: Configure moodle for start up
+    - name: Configure moodle
       include_tasks:
-        file: jobs/run/install_moodle.yml
+        file: jobs/run/config_moodle.yml
         apply:
           tags:
           - config-moodle
