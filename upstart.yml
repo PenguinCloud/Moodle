@@ -35,11 +35,9 @@
         file: jobs/run/ssl_generate.yml
         apply:
           tags:
-          - build
           - sslcertificate
           - run
       tags:
-      - build
       - sslcertificate
       - run
 

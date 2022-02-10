@@ -4,24 +4,26 @@ upstream php-handler {
 }
 
 server {
-        listen 80 default_server;
-        listen [::]:80 default_server;
+        listen 80;
+        listen [::]:80;
         root opt/moodle;
         index index.html index.htm index.nginx-debian.html;
-        server_name _;
+        server_name {{ organization.hostname }};
         location / {
                 try_files $uri $uri/ =404;
         }
 }
 
 server {
-        listen 443 ssl default_server;
-        listen [::]:443 ssl default_server;
+        listen 443 ssl;
+        listen [::]:443 ssl;
         ssl_certificate /etc/ssl/certs/{{ organization.name }}.pem;
         ssl_certificate_key /etc/ssl/private/{{ organization.name }}.pem;
         root opt/moodle;
+        access_log /var/log/nginx/access.log;
+        error_log /var/log/nginx/error.log;
         index index.html index.htm index.nginx-debian.html;
-        server_name _;
+        server_name {{ organization.hostname }};
         location / {
                 try_files $uri $uri/ =404;
         }
