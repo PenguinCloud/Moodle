@@ -1,0 +1,6 @@
+---
+- name: Template a file too opt/moodle
+  template:
+    src: moodle_config.j2
+    dest: /opt/moodle/config.php
+

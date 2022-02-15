@@ -1,0 +1,45 @@
+---
+version: "2.4"
+services:
+  mariadb:
+    image: 'bitnami/mariadb:latest'
+    environment:
+      - ALLOW_EMPTY_PASSWORD=yes
+      - MARIADB_PASSWORD=p@ssword
+      - MARIADB_DATABASE=moodle
+      - MARIADB_USER=moodle
+    ports:
+      - "3306:3306"
+    networks:
+      - moodle
+
+  php-fpm:
+    image: 'bitnami/php-fpm:latest'
+    ports:
+      - "9000:9000"
+    networks:
+      - moodle
+
+  moodle-server:
+    build: .
+    environment:
+      - DATABASE_HOST=mariadb
+      - URL=https://127.0.0.1
+    ports:
+      - "80:80"
+      - "443:443"
+    depends_on:
+      - mariadb
+      - php-fpm
+    networks:
+      - moodle
+    restart: on-failure # Added this to give maria_db to configure for testing purposes
+    healthcheck:
+      test: ["CMD", "ansible-playbook", "upstart.yml", "--tag", "test"]
+      interval: 5m
+      timeout: 10s
+      retries: 3
+      start_period: 10s
+
+networks:
+  moodle:
