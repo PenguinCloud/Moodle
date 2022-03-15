@@ -1,0 +1,9 @@
+---
+- name: Execute NGINX
+  include_tasks:
+    file: jobs/exec/nginx.yml
+    apply:
+      tags:
+      - exec
+  tags:
+  - exec

@@ -1,123 +1,56 @@
 ---
-- name: Install moodle server
+- name: Install Moodle Server
   hosts: localhost
   connection: local
   vars_files:
-    - vars/prod.yml
+    - vars/base.yml
+  become: yes
+  become_user: root
+  remote_user: root
   tasks:
-
-    - name: Install Moodle Dependencies
+    - name: Include nodeType variables
+      include_vars:
+        file: "vars/{{ BUILD_ENVIRONMENT }}.yml"
+      tags:
+        - always
+      ignore_errors: yes
+    - name: Include Special Variables
+      include_vars:
+        file: "vars/{{ lookup('env', 'COMPUTE_ENV') | default( 'base', True) }}.yml"
+      ignore_errors: yes
+    - name: Build And Install
       include_tasks:
-        file: jobs/build/install_dependcies.yml
+        file: jobs/build/build.yml
         apply:
           tags:
-          - nginx
-          - php
-          - build
+            - build
       tags:
-      - nginx
-      - php
-      - build
-
-    - name: Install Moodle
-      include_tasks:
-        file: jobs/build/install_moodle.yml
-        apply:
-          tags:
-          - moodle
-          - build
-      tags:
-        - moodle
         - build
-
-    - name: Generate Private SSL Key
+    - name: Run Configuration and Live
       include_tasks:
-        file: jobs/run/ssl_generate.yml
+        file: jobs/run/run.yml
         apply:
           tags:
-          - sslcertificate
-          - run
-      tags:
-      - sslcertificate
-      - run
-
-    - name: Configure NGINX
-      include_tasks:
-        file: jobs/run/config_nginx.yml
-        apply:
-          tags:
-          - nginx
-          - run
-      tags:
-      - nginx
-      - run
-
-    - name: Run nginx
-      include_tasks:
-        file: jobs/run/nginx.yml
-        apply:
-          tags:
-            - nginx
             - run
       tags:
-        - nginx
         - run
-
-    - name: Configure moodle
+    - name: Run tests to make sure build and run applied application correctly
       include_tasks:
-        file: jobs/run/config_moodle.yml
-        apply:
-          tags:
-          - config-moodle
-          - run
+        file: jobs/run/tests.yml
       tags:
-      - config_moodle
-      - run
-
-    - name: Test database connectivity
-      include_tasks:
-        file: jobs/test/database_test.yml
-        apply:
-          tags:
-          - database
-          - test
-          - run
-      tags:
-      - database
-      - test
-      - run
-
-    - name: Test Nginx
-      include_tasks:
-        file: jobs/test/nginx_test.yml
-        apply:
-          tags:
-          - nginx
-          - test
-          - run
-      tags:
-      - nginx
-      - test
-      - run
-
-    - name: Test URL
-      include_tasks:
-        file: jobs/test/moodle_test.yml
-        apply:
-          tags:
-            - url
-            - test
-            - run
-      tags:
-        - url
+        - run
         - test
-        - run
-
-    - name: Execute NGINX
+    - name: Execute application
       include_tasks:
-        file: jobs/exec/nginx.yml
+        file: jobs/run/exec.yml
         apply:
           tags:
-          - exec
+            - exec
       tags:
-      - exec
+        - exec
+    - name: Run tests to make sure app is running as expected
+      include_tasks:
+        file: jobs/run/tests.yml
+      tags:
+        - exec
+        - test

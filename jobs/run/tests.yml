@@ -1,0 +1,33 @@
+---
+- name: Test database connectivity
+  include_tasks:
+    file: jobs/test/database_test.yml
+    apply:
+      tags:
+      - database
+      - test
+  tags:
+  - database
+  - test
+
+- name: Test Nginx
+  include_tasks:
+    file: jobs/test/nginx_test.yml
+    apply:
+      tags:
+      - nginx
+      - test
+  tags:
+  - nginx
+  - test
+
+- name: Test URL
+  include_tasks:
+    file: jobs/test/url_test.yml
+    apply:
+      tags:
+        - url
+        - test
+  tags:
+    - url
+    - test
