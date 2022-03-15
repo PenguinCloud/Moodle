@@ -1,0 +1,24 @@
+---
+- name: Install Moodle Dependencies
+  include_tasks:
+    file: jobs/build/install_dependcies.yml
+    apply:
+      tags:
+      - nginx
+      - php
+      - build
+  tags:
+  - nginx
+  - php
+  - build
+
+- name: Install Moodle
+  include_tasks:
+    file: jobs/build/install_moodle.yml
+    apply:
+      tags:
+      - moodle
+      - build
+  tags:
+    - moodle
+    - build
