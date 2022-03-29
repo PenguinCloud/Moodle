@@ -2,5 +2,5 @@
 - name: Install Moodle via git
   ansible.builtin.git:
     repo: "{{ moodle_repo }}"
-#   version: MOODLE_3116_STABLE
+    version: "{{ moodle_version }}"
     dest: /opt/moodle

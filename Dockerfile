@@ -15,6 +15,7 @@ ENV URL="https://127.0.0.1"
 ENV CPU_COUNT="2"
 ENV FILE_LIMIT="1042"
 ARG MOODLE_REPO="https://github.com/moodle/moodle.git"
+ARG MOODLE_VERSION="MOODLE_311_STABLE"
 RUN ansible-playbook /opt/manager/upstart.yml -c local --tags build
 RUN ln -sf /dev/stdout /var/log/nginx/access.log \
 	&& ln -sf /dev/stderr /var/log/nginx/error.log

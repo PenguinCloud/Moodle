@@ -32,12 +32,12 @@
     - nginx
     - run
 
-- name: Configure moodle
+- name: Configure Moodle
   include_tasks:
     file: jobs/run/config_moodle.yml
     apply:
       tags:
-      - configs-moodle
+      - config_moodle
       - run
   tags:
   - config_moodle
