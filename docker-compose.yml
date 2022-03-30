@@ -21,7 +21,7 @@ services:
       - moodle
 
   moodle-server:
-    build: .
+    build:
     environment:
       - DATABASE_HOST=mariadb
       - URL=https://127.0.0.1
@@ -33,13 +33,6 @@ services:
       - php-fpm
     networks:
       - moodle
-    restart: on-failure # Added this to give maria_db to configure for testing purposes
-    healthcheck:
-      test: ["CMD", "ansible-playbook", "upstart.yml", "--tag", "test"]
-      interval: 5m
-      timeout: 10s
-      retries: 3
-      start_period: 10s
 
 networks:
   moodle:

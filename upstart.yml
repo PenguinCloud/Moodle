@@ -36,13 +36,13 @@
         - run
     - name: Run tests to make sure build and run applied application correctly
       include_tasks:
-        file: jobs/run/tests.yml
+        file: jobs/tests/tests.yml
       tags:
         - run
-        - test
+        - tests
     - name: Execute application
       include_tasks:
-        file: jobs/run/exec.yml
+        file: jobs/exec/exec.yml
         apply:
           tags:
             - exec
@@ -50,7 +50,7 @@
         - exec
     - name: Run tests to make sure app is running as expected
       include_tasks:
-        file: jobs/run/tests.yml
+        file: jobs/tests/tests.yml
       tags:
         - exec
-        - test
+        - tests
