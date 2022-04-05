@@ -10,4 +10,3 @@
   until: task_result.rc == 0
   retries: 10
   delay: 1
-  ignore_errors: yes

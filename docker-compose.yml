@@ -21,7 +21,7 @@ services:
       - moodle
 
   moodle-server:
-    build:
+    build: .
     environment:
       - DATABASE_HOST=mariadb
       - URL=https://127.0.0.1
