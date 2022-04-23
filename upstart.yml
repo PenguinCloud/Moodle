@@ -37,6 +37,10 @@
     - name: Run tests to make sure build and run applied application correctly
       include_tasks:
         file: jobs/tests/tests.yml
+        apply:
+          tags:
+          - run
+          - tests
       tags:
         - run
         - tests

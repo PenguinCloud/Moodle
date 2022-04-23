@@ -7,6 +7,6 @@
     login_port: "{{ database.port }}"
     name: "{{ database.name }}"
   register: task_result
-  until: task_result.rc == 0
+  until: task_result is succeeded
   retries: 10
-  delay: 1
+  delay: 5
