@@ -9,4 +9,4 @@
   register: task_result
   until: task_result is succeeded
   retries: 10
-  delay: 5
+  delay: 30

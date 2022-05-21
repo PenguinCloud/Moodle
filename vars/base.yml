@@ -12,8 +12,9 @@ organization:
   email: "{{ lookup('env', 'ORGANIZATION_EMAIL') }}"
   hostname: "{{ lookup('env', 'ORGANISATION_HOSTNAME') }}"
 
-moodle_repo: "{{ lookup('env', 'MOODLE_REPO') }}"
-moodle_version: "{{ lookup('env', 'MOODLE_VERSION') }}"
+moodle:
+  repo: "{{ lookup('env', 'MOODLE_REPO') }}"
+  version: "{{ lookup('env', 'MOODLE_VERSION') }}"
 
 openssl:
   key_size: "4096"

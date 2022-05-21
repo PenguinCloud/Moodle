@@ -24,9 +24,6 @@ server {
         ssl_certificate /etc/ssl/certs/{{ organization.name }}.pem;
         ssl_certificate_key /etc/ssl/private/{{ organization.name }}.pem;
 
-        # Enable HSTS. This forces SSL on clients that respect it, most modern browsers. The includeSubDomains flag is optional.
-        add_header Strict-Transport-Security "max-age=31536000; includeSubDomains";
-
         root /opt/moodle;
         access_log /var/log/nginx/access.log;
         error_log /var/log/nginx/error.log;
