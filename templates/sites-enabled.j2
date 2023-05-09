@@ -6,11 +6,15 @@ upstream php-handler {
 server {
         listen 80;
         listen [::]:80;
-        root opt/moodle;
+        root /opt/moodle;
         index index.html index.htm index.nginx-debian.html;
         server_name {{ organization.hostname }};
         location / {
                 try_files $uri $uri/ =404;
+
+        # Enforce HTTPS just for `/moodle`
+        location /moodle {
+            return 301 https://$server_name$request_uri;
         }
 }
 
@@ -20,18 +24,7 @@ server {
         ssl_certificate /etc/ssl/certs/{{ organization.name }}.pem;
         ssl_certificate_key /etc/ssl/private/{{ organization.name }}.pem;
 
-        # Enable HSTS. This forces SSL on clients that respect it, most modern browsers. The includeSubDomains flag is optional.
-        add_header Strict-Transport-Security "max-age=31536000; includeSubDomains";
-
-        # Set caches, protocols, and accepted ciphers. This config will merit an A+ SSL Labs score as of Sept 2015.
-        ssl_session_cache shared:SSL:20m;
-        ssl_session_timeout 10m;
-        ssl_protocols TLSv1 TLSv1.1 TLSv1.2;
-        ssl_prefer_server_ciphers on;
-        ssl_ciphers 'ECDH+AESGCM:ECDH+AES256:ECDH+AES128:DH+3DES:!ADH:!AECDH:!MD5'
-
-
-        root opt/moodle;
+        root /opt/moodle;
         access_log /var/log/nginx/access.log;
         error_log /var/log/nginx/error.log;
         index index.html index.htm index.nginx-debian.html;
